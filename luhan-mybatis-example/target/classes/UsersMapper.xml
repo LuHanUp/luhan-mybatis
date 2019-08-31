@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="top.luhancc.mybatis.example.mapper.UserMapper">
+    <select id="selectById" resultType ="top.luhancc.mybatis.example.entity.Users">
+        select * from user where id = ?
+    </select>
+
+    <select id="selectByName" resultType ="top.luhancc.mybatis.example.entity.Users">
+        select * from user where username = ?
+    </select>
+</mapper>
