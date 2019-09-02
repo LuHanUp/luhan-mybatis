@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- *  抽象的结果映射处理器 <br>
+ *  抽象的结果映射处理器 E为SQL结果数据对象 <br>
  *      如果你需要将Mapper.xml中resultType返回成你想要的数据,你可以继承这个类来进行处理 <br>
  *          本框架默认的一些处理器是：①基本类型的处理器②对象集合处理器③Map处理器④单一对象处理器 <br>
  *  如果找不到存在的处理器,默认返回的是BasicTypesResultMappingHandler.STRING
