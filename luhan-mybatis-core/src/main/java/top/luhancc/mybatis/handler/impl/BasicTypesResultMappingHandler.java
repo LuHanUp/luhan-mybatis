@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class BasicTypesResultMappingHandler {
     public static AbstractResultMappingHandler<String> STRING = new AbstractResultMappingHandler<String>() {
         @Override
-        public String parse(ResultSet resultSet) throws SQLException {
+        public String parse(ResultSet resultSet, Object resultType) throws SQLException {
             ResultSetMetaData metaData = resultSet.getMetaData();
             while(resultSet.next()){
                 for (int i = 1; i <= metaData.getColumnCount(); i++) {
@@ -30,7 +30,7 @@ public class BasicTypesResultMappingHandler {
 
     public static AbstractResultMappingHandler<Integer> INTEGER = new AbstractResultMappingHandler<Integer>() {
         @Override
-        public Integer parse(ResultSet resultSet) throws SQLException {
+        public Integer parse(ResultSet resultSet, Object resultType) throws SQLException {
             ResultSetMetaData metaData = resultSet.getMetaData();
             while(resultSet.next()){
                 for (int i = 1; i <= metaData.getColumnCount(); i++) {
@@ -44,7 +44,7 @@ public class BasicTypesResultMappingHandler {
 
     public static AbstractResultMappingHandler<Double> DOUBLE = new AbstractResultMappingHandler<Double>() {
         @Override
-        public Double parse(ResultSet resultSet) throws SQLException {
+        public Double parse(ResultSet resultSet, Object resultType) throws SQLException {
             ResultSetMetaData metaData = resultSet.getMetaData();
             while(resultSet.next()){
                 for (int i = 1; i <= metaData.getColumnCount(); i++) {
@@ -58,7 +58,7 @@ public class BasicTypesResultMappingHandler {
 
     public static AbstractResultMappingHandler<Float> FLOAT = new AbstractResultMappingHandler<Float>() {
         @Override
-        public Float parse(ResultSet resultSet) throws SQLException {
+        public Float parse(ResultSet resultSet, Object resultType) throws SQLException {
             ResultSetMetaData metaData = resultSet.getMetaData();
             while(resultSet.next()){
                 for (int i = 1; i <= metaData.getColumnCount(); i++) {
@@ -72,7 +72,7 @@ public class BasicTypesResultMappingHandler {
 
     public static AbstractResultMappingHandler<Long> LONG = new AbstractResultMappingHandler<Long>() {
         @Override
-        public Long parse(ResultSet resultSet) throws SQLException {
+        public Long parse(ResultSet resultSet, Object resultType) throws SQLException {
             ResultSetMetaData metaData = resultSet.getMetaData();
             while(resultSet.next()){
                 for (int i = 1; i <= metaData.getColumnCount(); i++) {

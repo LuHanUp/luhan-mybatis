@@ -3,6 +3,8 @@ package top.luhancc.mybatis.example.mapper;
 
 import top.luhancc.mybatis.example.entity.Users;
 
+import java.util.List;
+
 /**
  * 〈User表的对应的数据库操作类〉<br>
  *
@@ -16,5 +18,7 @@ public interface UserMapper {
      String selectNameById(String id);
 
      int selectIdByName(String name);
+
+     List<Users> selectAll();
 }
 

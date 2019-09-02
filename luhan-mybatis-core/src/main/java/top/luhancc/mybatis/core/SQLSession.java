@@ -32,8 +32,8 @@ public class SQLSession {
         }
     }
 
-    public <T> T excutor(String statement, Object parameter,Object returnType){
-        return excutor.excutor(statement, parameter,returnType);
+    public <T> T excutor(String statement, Object[] parameter,Object returnType,Object resultType){
+        return excutor.excutor(statement, parameter,returnType,resultType);
     }
 
     @SuppressWarnings("unchecked")

@@ -84,6 +84,7 @@ public class DataSourceConfiguration {
 
         Class.forName(dataBaseBean.getDriverClassName());
         Class.forName("top.luhancc.mybatis.handler.impl.BasicTypesResultMappingHandler");
+        Class.forName("top.luhancc.mybatis.handler.impl.CollectionResultMappingHandler");
         Connection connection = DriverManager.getConnection(
                 dataBaseBean.getUrl(), dataBaseBean.getUsername(),dataBaseBean.getPassword());
         // TODO 后期加入连接池

@@ -35,7 +35,7 @@ public class MapperProxy implements InvocationHandler {
             for (FunctionBean function : list) {
                 //id是否和接口方法名一样
                 if(method.getName().equals(function.getFuncName())){
-                    return mySqlsession.excutor(function.getSql(), String.valueOf(args[0]),function.getResultType());
+                    return mySqlsession.excutor(function.getSql(), args,method.getReturnType(),function.getResultType());
                 }
             }
         }

@@ -1,6 +1,7 @@
 package top.luhancc.mybatis.handler;
 
 import top.luhancc.mybatis.constants.DataBaseKeyConstant;
+import top.luhancc.mybatis.handler.impl.BasicTypesResultMappingHandler;
 import top.luhancc.mybatis.utils.ClassUtil;
 
 import java.sql.ResultSet;
@@ -16,7 +17,7 @@ import java.sql.SQLException;
  * @since 1.0.0
  */
 public abstract class AbstractResultMappingHandler<E>{
-    public abstract E parse(ResultSet resultSet) throws SQLException;
+    public abstract E parse(ResultSet resultSet,Object resultType) throws SQLException;
 
     public AbstractResultMappingHandler() {
         DataBaseKeyConstant.CLASS_MAPPING_ENUMS.add(this);
@@ -29,6 +30,9 @@ public abstract class AbstractResultMappingHandler<E>{
      */
     public static AbstractResultMappingHandler get(String name){
         for (AbstractResultMappingHandler abstractResultMappingHandler : DataBaseKeyConstant.CLASS_MAPPING_ENUMS) {
+            if("int".equalsIgnoreCase(name)){
+                return BasicTypesResultMappingHandler.INTEGER;
+            }
             Class clazz = ClassUtil.getRealType(abstractResultMappingHandler.getClass());
             String simpleName = clazz.getSimpleName();
             if(simpleName.equalsIgnoreCase(name)){
@@ -40,6 +44,6 @@ public abstract class AbstractResultMappingHandler<E>{
 
     public static void main(String[] args) throws SQLException {
         AbstractResultMappingHandler qweqwe = AbstractResultMappingHandler.get("float");
-        System.out.println(qweqwe.parse(null));
+        System.out.println(qweqwe.parse(null,""));
     }
 }

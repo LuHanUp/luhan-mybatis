@@ -15,4 +15,8 @@
     <select id="selectIdByName" resultType ="int">
         select id from user where username = ?
     </select>
+
+    <select id="selectAll" resultType ="top.luhancc.mybatis.example.entity.Users">
+        select * from user
+    </select>
 </mapper>
