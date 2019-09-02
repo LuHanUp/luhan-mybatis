@@ -3,6 +3,7 @@ package top.luhancc.mybatis.excutor.impl;
 import top.luhancc.mybatis.configbean.MapperBean;
 import top.luhancc.mybatis.core.DataSourceConfiguration;
 import top.luhancc.mybatis.excutor.SQLExcutor;
+import top.luhancc.mybatis.handler.AbstractResultMappingHandler;
 
 import java.lang.reflect.Field;
 import java.sql.*;
@@ -26,21 +27,25 @@ public class DefaultSQLExcutor implements SQLExcutor {
             //设置参数
             pre.setString(1, parameter.toString());
             try(ResultSet set = pre.executeQuery()){
-                // Users u = new Users();
-                //遍历结果集
-                while (set.next()) {
-                    ResultSetMetaData metaData = set.getMetaData();
-                    for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                        String columnName = metaData.getColumnName(i);
-                        Object value = set.getObject(columnName);
-                        Class<?> returnTypeClass = returnType.getClass();
-                        try {
-                            Field field = returnTypeClass.getDeclaredField(columnName);
-                            field.setAccessible(true);
-                            field.set(returnType, value);
-                        } catch (NoSuchFieldException e) {
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
+                AbstractResultMappingHandler resultMappingHandler = AbstractResultMappingHandler.get(returnType.getClass().getSimpleName());
+                if(null != resultMappingHandler){
+                    returnType = resultMappingHandler.parse(set);
+                }else{
+                    // 遍历结果集
+                    while (set.next()) {
+                        ResultSetMetaData metaData = set.getMetaData();
+                        for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                            String columnName = metaData.getColumnName(i);
+                            Object value = set.getObject(columnName);
+                            Class<?> returnTypeClass = returnType.getClass();
+                            try {
+                                Field field = returnTypeClass.getDeclaredField(columnName);
+                                field.setAccessible(true);
+                                field.set(returnType, value);
+                            } catch (NoSuchFieldException e) {
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }

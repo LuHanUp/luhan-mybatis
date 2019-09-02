@@ -9,6 +9,7 @@ import top.luhancc.mybatis.configbean.DataBaseBean;
 import top.luhancc.mybatis.configbean.FunctionBean;
 import top.luhancc.mybatis.configbean.MapperBean;
 import top.luhancc.mybatis.constants.DataBaseKeyConstant;
+import top.luhancc.mybatis.enums.ResultTypeMappingsEnum;
 
 import java.io.File;
 import java.io.InputStream;
@@ -82,6 +83,7 @@ public class DataSourceConfiguration {
         parseMapperClassXmlMap(dataBaseBean.getMapperResource());
 
         Class.forName(dataBaseBean.getDriverClassName());
+        Class.forName("top.luhancc.mybatis.handler.impl.BasicTypesResultMappingHandler");
         Connection connection = DriverManager.getConnection(
                 dataBaseBean.getUrl(), dataBaseBean.getUsername(),dataBaseBean.getPassword());
         // TODO 后期加入连接池
@@ -183,13 +185,25 @@ public class DataSourceConfiguration {
             fun.setFuncName(funcName);
             Object newInstance = null;
             try {
-                newInstance = Class.forName(resultType).newInstance();
-            } catch (InstantiationException e1) {
+                ResultTypeMappingsEnum resultTypeMappingsEnum = ResultTypeMappingsEnum.get(resultType);
+                if(null != resultTypeMappingsEnum){
+                    if("java.lang.Integer".equalsIgnoreCase(resultTypeMappingsEnum.getClassName())){
+                        newInstance = 0;
+                    }else if("java.lang.Float".equalsIgnoreCase(resultTypeMappingsEnum.getClassName())){
+                        newInstance = 0F;
+                    }else if("java.lang.Double".equalsIgnoreCase(resultTypeMappingsEnum.getClassName())){
+                        newInstance = 0D;
+                    }else if("java.lang.Long".equalsIgnoreCase(resultTypeMappingsEnum.getClassName())){
+                        newInstance = 0L;
+                    }else{
+                        newInstance = Class.forName(resultTypeMappingsEnum.getClassName()).newInstance();
+                    }
+                }else{
+                    newInstance = Class.forName(resultType).newInstance();
+                }
+            } catch (Exception e1) {
                 e1.printStackTrace();
-            } catch (IllegalAccessException e1) {
-                e1.printStackTrace();
-            } catch (ClassNotFoundException e1) {
-                e1.printStackTrace();
+                throw new RuntimeException(String.format("java中不能对%s进行实例化",resultType));
             }
             fun.setResultType(newInstance);
             fun.setSql(sql);

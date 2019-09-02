@@ -13,5 +13,8 @@ import top.luhancc.mybatis.example.entity.Users;
 public interface UserMapper {
      Users selectById(String id);
      Users selectByName(String name);
+     String selectNameById(String id);
+
+     int selectIdByName(String name);
 }
 

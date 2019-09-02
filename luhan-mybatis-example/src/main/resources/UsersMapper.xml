@@ -7,4 +7,12 @@
     <select id="selectByName" resultType ="top.luhancc.mybatis.example.entity.Users">
         select * from user where username = ?
     </select>
+
+    <select id="selectNameById" resultType ="string">
+        select username from user where id = ?
+    </select>
+
+    <select id="selectIdByName" resultType ="int">
+        select id from user where username = ?
+    </select>
 </mapper>

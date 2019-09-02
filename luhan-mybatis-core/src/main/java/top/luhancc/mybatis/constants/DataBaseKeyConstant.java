@@ -1,5 +1,10 @@
 package top.luhancc.mybatis.constants;
 
+import top.luhancc.mybatis.handler.AbstractResultMappingHandler;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 〈database.xml中所有属性名称name的常量类>
  *
@@ -52,4 +57,6 @@ public class DataBaseKeyConstant {
      * Mapper.xml里namespace
      */
     public static final String NAMESPACE = "namespace";
+
+    public static List<AbstractResultMappingHandler> CLASS_MAPPING_ENUMS = new ArrayList<>();
 }

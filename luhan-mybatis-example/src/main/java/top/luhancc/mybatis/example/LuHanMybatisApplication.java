@@ -20,5 +20,10 @@ public class LuHanMybatisApplication {
         Users user2 = mapper.selectByName("luhan");
         System.out.println(user);
         System.out.println(user2);
+        String username = mapper.selectNameById("1");
+        System.out.println(username);
+
+        int id = mapper.selectIdByName("luhan");
+        System.out.println("id:"+id);
     }
 }
