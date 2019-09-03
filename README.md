@@ -11,6 +11,79 @@ luhan-mybatis 父工程
 luhan-mybatis-core 核心工程(代码都在此工程里)  
 luhan-mybatis-example 演示DEMO工程  
 
+## 目录说明
+```
+│  pom.xml  父工程的POM文件
+│  README.md    整个项目的说明文件
+│      
+├─luhan-mybatis-core    手写mybatis核心模块
+│  │  pom.xml   luhan-mybatis-core的POM文件
+│  ├─src
+│  │  ├─main
+│  │  │  ├─java
+│  │  │  │  └─top
+│  │  │  │      └─luhancc
+│  │  │  │          └─mybatis
+│  │  │  │              ├─configbean    存放各种数据结构的bean
+│  │  │  │              │      DataBaseBean.java    数据源信息
+│  │  │  │              │      FunctionBean.java    mapper接口的所有方法信息
+│  │  │  │              │      MapperBean.java  mapper接口的相关信息(包含FunctionBean)
+│  │  │  │              │      
+│  │  │  │              ├─constants 存放项目中用到的常量类
+│  │  │  │              │      ConfigurationKeyConstant.java    configuration配置文件中的一些常量(包含节点名称,节点的属性等等)
+│  │  │  │              │      
+│  │  │  │              ├─core  核心包
+│  │  │  │              │      DataSourceConfiguration.java 解析configuration配置文件,将其内容加载到内存中(其对象是唯一一个)
+│  │  │  │              │      DefaultSQLSession.java   默认的SQLSession实现类
+│  │  │  │              │      MapperProxy.java Mapper接口的代理实现类
+│  │  │  │              │      SQLSession.java  SQLSession接口
+│  │  │  │              │      SQLSessionFactory.java   创建SQLSession的工厂类
+│  │  │  │              │      
+│  │  │  │              ├─enums
+│  │  │  │              │      ResultTypeMappingsEnum.java  存放基本类型对应的java包装类的类路径
+│  │  │  │              │      
+│  │  │  │              ├─excutor   执行SQL语句处理相关包
+│  │  │  │              │  │  SQLExecutor.java  执行SQL语句处理接口
+│  │  │  │              │  │  
+│  │  │  │              │  └─impl   存放SQLExecutor的所有实现类
+│  │  │  │              │          DefaultSQLExecutor.java  默认的执行SQL语句处理接口实现类
+│  │  │  │              │          
+│  │  │  │              ├─handler   数据(SQL查询的数据)解析处理相关包
+│  │  │  │              │  │  AbstractResultMappingHandler.java 抽象的数据解析类
+│  │  │  │              │  │  
+│  │  │  │              │  └─impl   存放AbstractResultMappingHandler实现类
+│  │  │  │              │          BasicTypesResultMappingHandler.java  处理返回基本类型的数据处理类
+│  │  │  │              │          CollectionResultMappingHandler.java  处理返回集合类型的数据处理类
+│  │  │  │              │          SingleResultMappingHandler.java  处理返回单对象的数据处理类
+│  │  │  │              │          
+│  │  │  │              └─utils 存放需要用到的相关工具类
+│  │  │  │                      ClassUtil.java  关于class的相关操作
+│      │                      
+└─luhan-mybatis-example 测试使用luhan-mybatis-core的模块
+    │  pom.xml  luhan-mybatis-example的POM文件
+    │  
+    ├─src
+    │  ├─main
+    │  │  ├─java
+    │  │  │  └─top
+    │  │  │      └─luhancc
+    │  │  │          └─mybatis
+    │  │  │              └─example
+    │  │  │                  │  LuHanMybatisApplication.java    主启动类
+    │  │  │                  │  
+    │  │  │                  ├─entity   存放各种实体
+    │  │  │                  │      Users.java  对应Users表
+    │  │  │                  │      
+    │  │  │                  └─mapper   存放Mapper接口
+    │  │  │                          UserMapper.java    Users实体操作的Mapper接口
+    │  │  │                          
+    │  │  └─resources
+    │  │      │  configuration.xml  mybatis的配置文件
+    │  │      │  
+    │  │      └─mapper
+    │  │              UsersMapper.xml   UserMapper接口的mapper定义文件
+```
+
 ## 代码使用示例
 #### 引入luhan-mybatis-core
     <dependency>
@@ -59,24 +132,24 @@ luhan-mybatis-example 演示DEMO工程
     SQLSession sqlsession = sqlSessionFactory.opSession();
     UserMapper mapper = sqlsession.getMapper(UserMapper.class);
 #### 调用Mapper.java相关方法
-        Users user = mapper.selectById("1");
-        System.out.println("mapper.selectById(\"1\"):"+user);
-        System.out.println();
+    Users user = mapper.selectById("1");
+    System.out.println("mapper.selectById(\"1\"):"+user);
+    System.out.println();
 
-        Users user2 = mapper.selectByName("luhan");
-        System.out.println("mapper.selectByName(\"luhan\"):"+user2);
-        System.out.println();
+    Users user2 = mapper.selectByName("luhan");
+    System.out.println("mapper.selectByName(\"luhan\"):"+user2);
+    System.out.println();
 
-        String username = mapper.selectNameById("1");
-        System.out.println("mapper.selectNameById(\"1\"):"+username);
-        System.out.println();
+    String username = mapper.selectNameById("1");
+    System.out.println("mapper.selectNameById(\"1\"):"+username);
+    System.out.println();
 
-        int id = mapper.selectIdByName("luhan");
-        System.out.println("id:"+id);
-        System.out.println();
+    int id = mapper.selectIdByName("luhan");
+    System.out.println("id:"+id);
+    System.out.println();
 
-        List<Users> usersList = mapper.selectAll();
-        System.out.println("mapper.selectAll():"+usersList);
+    List<Users> usersList = mapper.selectAll();
+    System.out.println("mapper.selectAll():"+usersList);
 #### 结果示例
 ![luhan-mybatis-example运行结果](http://i2.tiimg.com/698680/d5e82b70fd07c744.png)
 #### 当前只是简单的实现,后面会逐渐完善 
