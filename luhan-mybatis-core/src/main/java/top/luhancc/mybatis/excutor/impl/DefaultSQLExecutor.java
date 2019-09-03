@@ -1,12 +1,10 @@
 package top.luhancc.mybatis.excutor.impl;
 
-import top.luhancc.mybatis.configbean.MapperBean;
 import top.luhancc.mybatis.core.DataSourceConfiguration;
-import top.luhancc.mybatis.excutor.SQLExcutor;
+import top.luhancc.mybatis.excutor.SQLExecutor;
 import top.luhancc.mybatis.handler.AbstractResultMappingHandler;
 import top.luhancc.mybatis.handler.impl.SingleResultMappingHandler;
 
-import java.lang.reflect.Field;
 import java.sql.*;
 
 /**
@@ -16,15 +14,15 @@ import java.sql.*;
  * @create 2019-08-30 14:46
  * @since 1.0.0
  */
-public class DefaultSQLExcutor implements SQLExcutor {
+public class DefaultSQLExecutor implements SQLExecutor {
     private DataSourceConfiguration xmlConfiguration;
 
-    public DefaultSQLExcutor(DataSourceConfiguration xmlConfiguration) {
+    public DefaultSQLExecutor(DataSourceConfiguration xmlConfiguration) {
         this.xmlConfiguration = xmlConfiguration;
     }
 
     @Override
-    public <T> T excutor(String sql, Object[] parameter,Object returnType,Object resultType) throws Exception {
+    public <T> T executor(String sql, Object[] parameter,Object returnType,Object resultType) throws Exception {
         Connection connection = getConnection();
         try(PreparedStatement pre = connection.prepareStatement(sql)) {
             System.out.println("SQL:" + sql);

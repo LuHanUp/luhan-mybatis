@@ -1,6 +1,6 @@
 package top.luhancc.mybatis.core;
 
-import top.luhancc.mybatis.excutor.SQLExcutor;
+import top.luhancc.mybatis.excutor.SQLExecutor;
 
 import java.lang.reflect.Proxy;
 
@@ -14,11 +14,11 @@ import java.lang.reflect.Proxy;
 public class DefaultSQLSession implements SQLSession{
 
     private DataSourceConfiguration dataSourceConfiguration;
-    private SQLExcutor sqlExcutor;
+    private SQLExecutor sqlExecutor;
 
-    public DefaultSQLSession(DataSourceConfiguration dataSourceConfiguration, SQLExcutor sqlExcutor) {
+    public DefaultSQLSession(DataSourceConfiguration dataSourceConfiguration, SQLExecutor sqlExecutor) {
         this.dataSourceConfiguration = dataSourceConfiguration;
-        this.sqlExcutor = sqlExcutor;
+        this.sqlExecutor = sqlExecutor;
     }
 
     @Override
@@ -26,6 +26,6 @@ public class DefaultSQLSession implements SQLSession{
     public <T> T getMapper(Class<T> clas) {
         //动态代理调用
         return (T)Proxy.newProxyInstance(clas.getClassLoader(),new Class[]{clas},
-                new MapperProxy(this.sqlExcutor,this,dataSourceConfiguration));
+                new MapperProxy(this.sqlExecutor,this,dataSourceConfiguration));
     }
 }

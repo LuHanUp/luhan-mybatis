@@ -1,7 +1,7 @@
 package top.luhancc.mybatis.core;
 
-import top.luhancc.mybatis.excutor.SQLExcutor;
-import top.luhancc.mybatis.excutor.impl.DefaultSQLExcutor;
+import top.luhancc.mybatis.excutor.SQLExecutor;
+import top.luhancc.mybatis.excutor.impl.DefaultSQLExecutor;
 
 /**
  * 〈SQLSession的工厂类  负责产生SQLSession〉<br>
@@ -11,15 +11,15 @@ import top.luhancc.mybatis.excutor.impl.DefaultSQLExcutor;
  * @since 1.0.0
  */
 public class SQLSessionFactory {
-    private SQLExcutor excutor;
+    private SQLExecutor executor;
     private DataSourceConfiguration dataSourceConfiguration = new DataSourceConfiguration();
 
-    public SQLSessionFactory(String configuractionPath) throws Exception {
-        dataSourceConfiguration.build(configuractionPath);
-        this.excutor = new DefaultSQLExcutor(dataSourceConfiguration);
+    public SQLSessionFactory(String configurationPath) throws Exception {
+        dataSourceConfiguration.build(configurationPath);
+        this.executor = new DefaultSQLExecutor(dataSourceConfiguration);
     }
 
     public SQLSession opSession(){
-        return new DefaultSQLSession(dataSourceConfiguration,excutor);
+        return new DefaultSQLSession(dataSourceConfiguration,executor);
     }
 }

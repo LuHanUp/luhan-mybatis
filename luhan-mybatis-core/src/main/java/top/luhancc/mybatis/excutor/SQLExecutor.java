@@ -7,6 +7,6 @@ package top.luhancc.mybatis.excutor;
  * @create 2019-08-30 14:44
  * @since 1.0.0
  */
-public interface SQLExcutor {
-    <T> T excutor(String sql, Object[] parameter,Object returnType,Object resultType) throws Exception;
+public interface SQLExecutor {
+    <T> T executor(String sql, Object[] parameter,Object returnType,Object resultType) throws Exception;
 }
