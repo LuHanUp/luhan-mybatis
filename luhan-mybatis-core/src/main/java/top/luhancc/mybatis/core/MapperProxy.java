@@ -2,6 +2,7 @@ package top.luhancc.mybatis.core;
 
 import top.luhancc.mybatis.configbean.FunctionBean;
 import top.luhancc.mybatis.configbean.MapperBean;
+import top.luhancc.mybatis.excutor.SQLExcutor;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -15,12 +16,14 @@ import java.util.List;
  * @since 1.0.0
  */
 public class MapperProxy implements InvocationHandler {
-    private SQLSession mySqlsession;
+    private SQLExcutor excutor;
+    private SQLSession sqlSession;
     private DataSourceConfiguration dataSourceConfiguration;
 
-    public MapperProxy(DataSourceConfiguration dataSourceConfiguration, SQLSession mySqlsession) {
+    public MapperProxy(SQLExcutor excutor, SQLSession sqlSession, DataSourceConfiguration dataSourceConfiguration) {
+        this.excutor = excutor;
+        this.sqlSession = sqlSession;
         this.dataSourceConfiguration = dataSourceConfiguration;
-        this.mySqlsession=mySqlsession;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class MapperProxy implements InvocationHandler {
             for (FunctionBean function : list) {
                 //id是否和接口方法名一样
                 if(method.getName().equals(function.getFuncName())){
-                    return mySqlsession.excutor(function.getSql(), args,method.getReturnType(),function.getResultType());
+                    return excutor.excutor(function.getSql(), args,method.getReturnType(),function.getResultType());
                 }
             }
         }

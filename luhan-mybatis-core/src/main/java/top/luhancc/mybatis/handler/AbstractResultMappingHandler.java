@@ -1,6 +1,6 @@
 package top.luhancc.mybatis.handler;
 
-import top.luhancc.mybatis.constants.DataBaseKeyConstant;
+import top.luhancc.mybatis.constants.ConfigurationKeyConstant;
 import top.luhancc.mybatis.handler.impl.BasicTypesResultMappingHandler;
 import top.luhancc.mybatis.utils.ClassUtil;
 
@@ -20,7 +20,7 @@ public abstract class AbstractResultMappingHandler<E>{
     public abstract E parse(ResultSet resultSet,Object resultType) throws SQLException;
 
     public AbstractResultMappingHandler() {
-        DataBaseKeyConstant.CLASS_MAPPING_ENUMS.add(this);
+        ConfigurationKeyConstant.CLASS_MAPPING_ENUMS.add(this);
     }
 
     /**
@@ -29,7 +29,7 @@ public abstract class AbstractResultMappingHandler<E>{
      * @return
      */
     public static AbstractResultMappingHandler get(String name){
-        for (AbstractResultMappingHandler abstractResultMappingHandler : DataBaseKeyConstant.CLASS_MAPPING_ENUMS) {
+        for (AbstractResultMappingHandler abstractResultMappingHandler : ConfigurationKeyConstant.CLASS_MAPPING_ENUMS) {
             if("int".equalsIgnoreCase(name)){
                 return BasicTypesResultMappingHandler.INTEGER;
             }

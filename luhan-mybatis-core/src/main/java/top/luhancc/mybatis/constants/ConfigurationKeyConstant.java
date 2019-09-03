@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 〈database.xml中所有属性名称name的常量类>
+ * 〈configuration.xml中所有属性名称name的常量类>
  *
  * @author luHan
  * @create 2019-08-31 14:55
  * @since 1.0.0
  */
-public class DataBaseKeyConstant {
+public class ConfigurationKeyConstant {
     /**
-     * database.xml根节点的名称
+     * configuration.xml配置文件根节点的名称
      */
-    public static final String ROOT_NAME = "database";
+    public static final String ROOT_NAME = "configuration";
 
     /**
      * 数据库驱动类地址

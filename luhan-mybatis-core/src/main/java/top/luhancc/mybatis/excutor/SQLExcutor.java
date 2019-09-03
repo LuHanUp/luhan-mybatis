@@ -8,5 +8,5 @@ package top.luhancc.mybatis.excutor;
  * @since 1.0.0
  */
 public interface SQLExcutor {
-    <T> T excutor(String sql, Object[] parameter,Object returnType,Object resultType);
+    <T> T excutor(String sql, Object[] parameter,Object returnType,Object resultType) throws Exception;
 }

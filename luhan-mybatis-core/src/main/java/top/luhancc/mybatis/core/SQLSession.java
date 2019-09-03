@@ -15,31 +15,10 @@ import java.sql.SQLException;
  * @create 2019-08-30 14:43
  * @since 1.0.0
  */
-public class SQLSession {
-    private SQLExcutor excutor = new DefaultSQLExcutor();
-
-    private DataSourceConfiguration dataSourceConfiguration = new DataSourceConfiguration();
-
-    public SQLSession() {
-        try {
-            dataSourceConfiguration.build("database.xml");
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public <T> T excutor(String statement, Object[] parameter,Object returnType,Object resultType){
-        return excutor.excutor(statement, parameter,returnType,resultType);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T getMapper(Class<T> clas){
-        //动态代理调用
-        return (T)Proxy.newProxyInstance(clas.getClassLoader(),new Class[]{clas},
-                new MapperProxy(dataSourceConfiguration,this));
-    }
+public interface SQLSession {
+    <T> T getMapper(Class<T> clas);
+    // <T> T select(Class<T> clas);
+    // <T> T update(Class<T> clas);
+    // <T> T insert(Class<T> clas);
+    // <T> T delete(Class<T> clas);
 }

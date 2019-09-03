@@ -8,7 +8,7 @@ import org.dom4j.io.SAXReader;
 import top.luhancc.mybatis.configbean.DataBaseBean;
 import top.luhancc.mybatis.configbean.FunctionBean;
 import top.luhancc.mybatis.configbean.MapperBean;
-import top.luhancc.mybatis.constants.DataBaseKeyConstant;
+import top.luhancc.mybatis.constants.ConfigurationKeyConstant;
 import top.luhancc.mybatis.enums.ResultTypeMappingsEnum;
 
 import java.io.File;
@@ -36,14 +36,22 @@ public class DataSourceConfiguration {
     private static final Map<String,String> mapperClassXmlMap = new ConcurrentHashMap<>();
 
     /**
-     * 通过database.xml来获取Connection
-     * @param resource database.xml所在路径
-     * @return Connection
+     * 数据库相关配置信息
      */
-    public Connection build(String resource) throws DocumentException, SQLException, ClassNotFoundException {
-        return evalDataSource(getRootElement(resource));
+    private DataBaseBean dataBaseBean;
+
+    /**
+     * 通过configuration.xml内容
+     * @param resource configuration.xml所在路径
+     */
+    public void build(String resource) throws Exception {
+        evalDataSource(getRootElement(resource));
     }
 
+    /**
+     * 获取根节点
+     * @param resource configuration.xml文件地址
+     */
     private Element getRootElement(String resource) throws DocumentException {
         InputStream resourceStream = classLoader.getResourceAsStream(resource);
         SAXReader saxReader = new SAXReader();
@@ -51,6 +59,10 @@ public class DataSourceConfiguration {
         return document.getRootElement();
     }
 
+    /**
+     * 获取根节点
+     * @param file configuration.xml文件
+     */
     private Element getRootElement(File file) throws DocumentException {
         SAXReader saxReader = new SAXReader();
         Document document = saxReader.read(file);
@@ -58,65 +70,58 @@ public class DataSourceConfiguration {
     }
 
     /**
-     * 解析database.xml内容获取Connection
-     * @param rootElement 根节点,必须为database
+     * 解析configuration.xml内容
+     * @param rootElement 根节点,必须为configuration
      */
-    private Connection evalDataSource(Element rootElement) throws ClassNotFoundException, SQLException, DocumentException {
-        if(!DataBaseKeyConstant.ROOT_NAME.equals(rootElement.getName())){
-            throw new RuntimeException(String.format("database.xml 根节点必须是<%s>",DataBaseKeyConstant.ROOT_NAME));
+    private void evalDataSource(Element rootElement) throws Exception {
+        if(!ConfigurationKeyConstant.ROOT_NAME.equals(rootElement.getName())){
+            throw new RuntimeException(String.format("configuration.xml 根节点必须是<%s>",ConfigurationKeyConstant.ROOT_NAME));
         }
-
-        DataBaseBean dataBaseBean = parseToDataBaseBean(rootElement);
+        dataBaseBean = parseToDataBaseBean(rootElement);
         if(StringUtils.isEmpty(dataBaseBean.getDriverClassName())){
-            throw new RuntimeException(String.format("database.xml 必须有<%s>属性",DataBaseKeyConstant.DRIVER_CLASS_NAME));
+            throw new RuntimeException(String.format("configuration.xml 必须有<%s>属性",ConfigurationKeyConstant.DRIVER_CLASS_NAME));
         }
         if(StringUtils.isEmpty(dataBaseBean.getUrl())){
-            throw new RuntimeException(String.format("database.xml 必须有<%s>属性",DataBaseKeyConstant.URL));
+            throw new RuntimeException(String.format("configuration.xml 必须有<%s>属性",ConfigurationKeyConstant.URL));
         }
         if(StringUtils.isEmpty(dataBaseBean.getUsername())){
-            throw new RuntimeException(String.format("database.xml 必须有<%s>属性",DataBaseKeyConstant.USERNAME));
+            throw new RuntimeException(String.format("configuration.xml 必须有<%s>属性",ConfigurationKeyConstant.USERNAME));
         }
         if(StringUtils.isEmpty(dataBaseBean.getPassword())){
-            throw new RuntimeException(String.format("database.xml 必须有<%s>属性",DataBaseKeyConstant.PASSWORD));
+            throw new RuntimeException(String.format("configuration.xml 必须有<%s>属性",ConfigurationKeyConstant.PASSWORD));
         }
 
         parseMapperClassXmlMap(dataBaseBean.getMapperResource());
-
-        Class.forName(dataBaseBean.getDriverClassName());
         Class.forName("top.luhancc.mybatis.handler.impl.BasicTypesResultMappingHandler");
         Class.forName("top.luhancc.mybatis.handler.impl.CollectionResultMappingHandler");
-        Connection connection = DriverManager.getConnection(
-                dataBaseBean.getUrl(), dataBaseBean.getUsername(),dataBaseBean.getPassword());
-        // TODO 后期加入连接池
-        return connection;
     }
 
     /**
-     * 通过 database.xml 内容构建DataBaseBean对象
+     * 通过 configuration.xml 内容构建DataBaseBean对象
      * @param rootElement
      * @return
      */
     private DataBaseBean parseToDataBaseBean(Element rootElement) {
         DataBaseBean dataBaseBean = new DataBaseBean();
 
-        for (Element item : (List<Element>)rootElement.elements(DataBaseKeyConstant.PROPERTY)) {
+        for (Element item : (List<Element>)rootElement.elements(ConfigurationKeyConstant.PROPERTY)) {
             // 节点的名称,也就是数据库配置名称
-            String elementName = item.attributeValue(DataBaseKeyConstant.NAME);
+            String elementName = item.attributeValue(ConfigurationKeyConstant.NAME);
             String value = getValue(item);
             switch (elementName){
-                case DataBaseKeyConstant.DRIVER_CLASS_NAME:
+                case ConfigurationKeyConstant.DRIVER_CLASS_NAME:
                     dataBaseBean.setDriverClassName(value);
                     break;
-                case DataBaseKeyConstant.MAPPER_RESOURCE:
+                case ConfigurationKeyConstant.MAPPER_RESOURCE:
                     dataBaseBean.setMapperResource(value);
                     break;
-                case DataBaseKeyConstant.USERNAME:
+                case ConfigurationKeyConstant.USERNAME:
                     dataBaseBean.setUsername(value);
                     break;
-                case DataBaseKeyConstant.PASSWORD:
+                case ConfigurationKeyConstant.PASSWORD:
                     dataBaseBean.setPassword(value);
                     break;
-                case DataBaseKeyConstant.URL:
+                case ConfigurationKeyConstant.URL:
                     dataBaseBean.setUrl(value);
                     break;
             }
@@ -153,7 +158,7 @@ public class DataSourceConfiguration {
             }
         }else{
             Element rootElement = getRootElement(file);
-            String namespace = rootElement.attributeValue(DataBaseKeyConstant.NAMESPACE);
+            String namespace = rootElement.attributeValue(ConfigurationKeyConstant.NAMESPACE);
             mapperClassXmlMap.put(namespace, file.getPath());
         }
     }
@@ -212,5 +217,13 @@ public class DataSourceConfiguration {
         }
         mapper.setList(list);
         return mapper;
+    }
+
+    public Connection getConnection() throws Exception {
+        Class.forName(dataBaseBean.getDriverClassName());
+        Connection connection = DriverManager.getConnection(
+                dataBaseBean.getUrl(), dataBaseBean.getUsername(),dataBaseBean.getPassword());
+        // TODO 后期加入连接池
+        return connection;
     }
 }

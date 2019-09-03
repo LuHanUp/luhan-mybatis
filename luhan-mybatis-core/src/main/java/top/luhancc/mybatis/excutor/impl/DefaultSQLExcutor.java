@@ -17,10 +17,14 @@ import java.sql.*;
  * @since 1.0.0
  */
 public class DefaultSQLExcutor implements SQLExcutor {
-    private DataSourceConfiguration xmlConfiguration = new DataSourceConfiguration();
+    private DataSourceConfiguration xmlConfiguration;
+
+    public DefaultSQLExcutor(DataSourceConfiguration xmlConfiguration) {
+        this.xmlConfiguration = xmlConfiguration;
+    }
 
     @Override
-    public <T> T excutor(String sql, Object[] parameter,Object returnType,Object resultType) {
+    public <T> T excutor(String sql, Object[] parameter,Object returnType,Object resultType) throws Exception {
         Connection connection = getConnection();
         try(PreparedStatement pre = connection.prepareStatement(sql)) {
             System.out.println("SQL:" + sql);
@@ -41,17 +45,11 @@ public class DefaultSQLExcutor implements SQLExcutor {
                 return (T) returnType;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(e);
         }
-        return null;
     }
 
-    private Connection getConnection() {
-        try {
-            return xmlConfiguration.build("database.xml");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    private Connection getConnection() throws Exception {
+        return this.xmlConfiguration.getConnection();
     }
 }

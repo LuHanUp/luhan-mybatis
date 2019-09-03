@@ -2,6 +2,7 @@ package top.luhancc.mybatis.example;
 
 
 import top.luhancc.mybatis.core.SQLSession;
+import top.luhancc.mybatis.core.SQLSessionFactory;
 import top.luhancc.mybatis.example.entity.Users;
 import top.luhancc.mybatis.example.mapper.UserMapper;
 
@@ -15,8 +16,10 @@ import java.util.List;
  * @since 1.0.0
  */
 public class LuHanMybatisApplication {
-    public static void main(String[] args) {
-        SQLSession sqlsession = new SQLSession();
+    public static void main(String[] args) throws Exception {
+        SQLSessionFactory sqlSessionFactory = new SQLSessionFactory("configuration.xml");
+        SQLSession sqlsession = sqlSessionFactory.opSession();
+
         UserMapper mapper = sqlsession.getMapper(UserMapper.class);
 
         Users user = mapper.selectById("1");

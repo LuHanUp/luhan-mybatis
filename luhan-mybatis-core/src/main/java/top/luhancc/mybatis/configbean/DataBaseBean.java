@@ -3,7 +3,7 @@ package top.luhancc.mybatis.configbean;
 import lombok.Data;
 
 /**
- * 〈database.xml 对应的Java Bean〉<br>
+ * 〈configuration.xml 对应的Database节点的 Java Bean〉<br>
  *
  * @author luHan
  * @create 2019-08-31 15:01
