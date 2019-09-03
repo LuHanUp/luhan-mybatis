@@ -168,7 +168,7 @@ public class DataSourceConfiguration {
      * @param mapperClassPath Mapper.java路径
      * @return
      */
-    public MapperBean readMapper(String mapperClassPath) throws DocumentException {
+    public MapperBean readMapper(String mapperClassPath) throws Exception {
         MapperBean mapper = new MapperBean();
         String mapperXmlPath = mapperClassXmlMap.get(mapperClassPath);
         File mapperXmlFile = null;
@@ -177,6 +177,7 @@ public class DataSourceConfiguration {
         } catch (Exception e) {
             throw new RuntimeException(String.format("不存在namespace=%s的Mapper.xml文件",mapperClassPath));
         }
+        mapper.setMapperXmlName(mapperXmlFile.getAbsolutePath());
         Element root = getRootElement(mapperXmlFile);
         mapper.setInterfaceName(root.attributeValue("namespace").trim()); //把mapper节点的nameSpace值存为接口名
         List<FunctionBean> list = new ArrayList<>(); //用来存储方法的List

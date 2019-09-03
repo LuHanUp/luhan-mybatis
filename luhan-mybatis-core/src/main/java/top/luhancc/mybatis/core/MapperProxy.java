@@ -29,14 +29,14 @@ public class MapperProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         MapperBean readMapper = dataSourceConfiguration.readMapper(method.getDeclaringClass().getName());
-        //是否是xml文件对应的接口
+        // 是否是xml文件对应的接口
         if(!method.getDeclaringClass().getName().equals(readMapper.getInterfaceName())){
-            return null;
+            throw new RuntimeException(String.format("%s文件namespace对应接口{%s}错误",readMapper.getMapperXmlName(),method.getDeclaringClass().getName()));
         }
         List<FunctionBean> list = readMapper.getList();
         if(null != list || 0 != list.size()){
             for (FunctionBean function : list) {
-                //id是否和接口方法名一样
+                // id是否和接口方法名一样
                 if(method.getName().equals(function.getFuncName())){
                     return excutor.excutor(function.getSql(), args,method.getReturnType(),function.getResultType());
                 }

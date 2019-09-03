@@ -13,6 +13,7 @@ import java.util.List;
  */
 @Data
 public class MapperBean {
-    private String interfaceName; //接口名
-    private List<FunctionBean> list; //接口下所有方法
+    private String interfaceName; // 接口名
+    private String mapperXmlName; // mapper.xml文件名称
+    private List<FunctionBean> list; // 接口下所有方法
 }
