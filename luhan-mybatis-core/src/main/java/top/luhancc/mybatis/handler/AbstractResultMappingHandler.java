@@ -4,7 +4,9 @@ import top.luhancc.mybatis.constants.ConfigurationKeyConstant;
 import top.luhancc.mybatis.handler.impl.BasicTypesResultMappingHandler;
 import top.luhancc.mybatis.utils.ClassUtil;
 
+import java.lang.reflect.Field;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 /**
@@ -19,7 +21,7 @@ import java.sql.SQLException;
 public abstract class AbstractResultMappingHandler<E>{
     public abstract E parse(ResultSet resultSet,Object resultType) throws SQLException;
 
-    public AbstractResultMappingHandler() {
+    protected AbstractResultMappingHandler() {
         ConfigurationKeyConstant.CLASS_MAPPING_ENUMS.add(this);
     }
 
@@ -42,8 +44,20 @@ public abstract class AbstractResultMappingHandler<E>{
         return null;
     }
 
-    public static void main(String[] args) throws SQLException {
-        AbstractResultMappingHandler qweqwe = AbstractResultMappingHandler.get("float");
-        System.out.println(qweqwe.parse(null,""));
+    /**
+     * 基础的将RestSet对象给指定的resultType进行赋值
+     * @param metaData ResultSetMetaData
+     * @param resultSet ResultSet
+     * @param resultType resultType
+     */
+    protected void parseObject(ResultSetMetaData metaData,ResultSet resultSet, Object resultType) throws SQLException, IllegalAccessException, NoSuchFieldException {
+        for (int i = 1; i <= metaData.getColumnCount(); i++) {
+            String columnName = metaData.getColumnName(i);
+            Object value = resultSet.getObject(columnName);
+            Class<?> returnTypeClass = resultType.getClass();
+            Field field = returnTypeClass.getDeclaredField(columnName);
+            field.setAccessible(true);
+            field.set(resultType, value);
+        }
     }
 }

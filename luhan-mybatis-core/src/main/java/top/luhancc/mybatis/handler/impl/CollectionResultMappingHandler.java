@@ -25,15 +25,9 @@ public class CollectionResultMappingHandler {
             // 遍历结果集
             while (resultSet.next()) {
                 try {
-                    for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                        String columnName = metaData.getColumnName(i);
-                        Object value = resultSet.getObject(columnName);
-                        Class<?> returnTypeClass = resultType.getClass();
-                        Field field = returnTypeClass.getDeclaredField(columnName);
-                        field.setAccessible(true);
-                        field.set(resultType, value);
-                    }
-                    list.add(resultType);
+                    Object newInstance = resultType.getClass().newInstance();
+                    this.parseObject(metaData, resultSet, newInstance);
+                    list.add(newInstance);
                 } catch (Exception e) {
 
                 }
