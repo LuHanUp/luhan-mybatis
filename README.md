@@ -154,5 +154,5 @@ luhan-mybatis-example 演示DEMO工程
     List<Users> usersList = mapper.selectAll();
     System.out.println("mapper.selectAll():"+usersList);
 #### 结果示例
-![luhan-mybatis-example运行结果](http://i2.tiimg.com/698680/d5e82b70fd07c744.png)
+![luhan-mybatis-example运行结果](http://i2.tiimg.com/698680/5b1e127b9bb401f3.png)
 #### 当前只是简单的实现,后面会逐渐完善 
