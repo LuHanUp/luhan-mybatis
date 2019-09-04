@@ -13,7 +13,7 @@ import java.sql.SQLException;
  *  抽象的结果映射处理器 E为SQL结果数据对象 <br>
  *      如果你需要将Mapper.xml中resultType返回成你想要的数据,你可以继承这个类来进行处理 <br>
  *          本框架默认的一些处理器是：①基本类型的处理器②对象集合处理器③Map处理器④单一对象处理器 <br>
- *  如果找不到存在的处理器,默认返回的是BasicTypesResultMappingHandler.STRING
+ *  如果找不到存在的处理器抛出异常
  * @author luHan
  * @create 2019-09-02 11:01
  * @since 1.0.0
@@ -41,7 +41,7 @@ public abstract class AbstractResultMappingHandler<E>{
                 return abstractResultMappingHandler;
             }
         }
-        return null;
+        throw new RuntimeException(String.format("ConfigurationKeyConstant.CLASS_MAPPING_ENUMS中没有对应[%s]的数据处理类",name));
     }
 
     /**
