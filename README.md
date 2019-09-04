@@ -90,9 +90,9 @@ luhan-mybatis-example 演示DEMO工程
 ## 代码使用示例
 #### 引入luhan-mybatis-core
     <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>1.16.22</version>
+        <groupId>top.luhancc</groupId>
+        <artifactId>luhan-mybatis-core</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </dependency>
 #### configuration.xml mybatis配置文件
     <?xml version="1.0" encoding="UTF-8"?>
@@ -110,6 +110,8 @@ luhan-mybatis-example 演示DEMO工程
         String selectNameById(String id);
         int selectIdByName(String name);
         List<Users> selectAll();
+        Map<String, Object> selectMapByName(String name);
+        List<Map<String, Object>> selectMapsAll();
     }
 #### UserMapper.xml(路径为mapper/UsersMapper.xml)
     <?xml version="1.0" encoding="UTF-8"?>
@@ -129,30 +131,51 @@ luhan-mybatis-example 演示DEMO工程
         <select id="selectAll" resultType ="top.luhancc.mybatis.example.entity.Users">
             select * from user
         </select>
+        <select id="selectMapByName" resultType ="map">
+            select * from user where username = ?
+        </select>
+        <select id="selectMapsAll" resultType ="map">
+            select * from user
+        </select>
     </mapper>
 #### 获取Mapper.java接口
     SQLSessionFactory sqlSessionFactory = new SQLSessionFactory("configuration.xml");
     SQLSession sqlsession = sqlSessionFactory.opSession();
     UserMapper mapper = sqlsession.getMapper(UserMapper.class);
 #### 调用Mapper.java相关方法
-    Users user = mapper.selectById("1");
-    System.out.println("mapper.selectById(\"1\"):"+user);
-    System.out.println();
+    public static void main(String[] args) throws Exception {
+        SQLSessionFactory sqlSessionFactory = new SQLSessionFactory("configuration.xml");
+        SQLSession sqlsession = sqlSessionFactory.opSession();
 
-    Users user2 = mapper.selectByName("luhan");
-    System.out.println("mapper.selectByName(\"luhan\"):"+user2);
-    System.out.println();
+        UserMapper mapper = sqlsession.getMapper(UserMapper.class);
 
-    String username = mapper.selectNameById("1");
-    System.out.println("mapper.selectNameById(\"1\"):"+username);
-    System.out.println();
+        Users user = mapper.selectById("1");
+        System.out.println("mapper.selectById(\"1\"):"+user);
+        System.out.println();
 
-    int id = mapper.selectIdByName("luhan");
-    System.out.println("id:"+id);
-    System.out.println();
+        Users user2 = mapper.selectByName("luhan");
+        System.out.println("mapper.selectByName(\"luhan\"):"+user2);
+        System.out.println();
 
-    List<Users> usersList = mapper.selectAll();
-    System.out.println("mapper.selectAll():"+usersList);
+        String username = mapper.selectNameById("1");
+        System.out.println("mapper.selectNameById(\"1\"):"+username);
+        System.out.println();
+
+        int id = mapper.selectIdByName("luhan");
+        System.out.println("id:"+id);
+        System.out.println();
+
+        List<Users> usersList = mapper.selectAll();
+        System.out.println("mapper.selectAll():"+usersList);
+
+        Map<String, Object> map = mapper.selectMapByName("luhan");
+        System.out.println("mapper.selectMapByName(\"luhan\"):"+map);
+        System.out.println();
+
+        List<Map<String, Object>> mapList = mapper.selectMapsAll();
+        System.out.println("mapper.selectMapsAll():"+mapList);
+        System.out.println();
+    }
 #### 结果示例
 ![luhan-mybatis-example运行结果](http://i2.tiimg.com/698680/5b1e127b9bb401f3.png)
 #### 当前只是简单的实现,后面会逐渐完善 
