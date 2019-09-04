@@ -26,14 +26,13 @@ public class DefaultSQLExecutor implements SQLExecutor {
         Connection connection = getConnection();
         try(PreparedStatement pre = connection.prepareStatement(sql)) {
             System.out.println("SQL:" + sql);
-            if(null != parameter){
+            if(null != parameter){// 设置参数
                 for (int i = 0; i < parameter.length; i++) {
                     System.out.println("参数:" + parameter[i] + "(" + parameter[i].getClass().getName() + ")");
                     pre.setString((i + 1), parameter[i].toString());
                 }
             }
-            //设置参数
-            try(ResultSet set = pre.executeQuery()){
+            try(ResultSet set = pre.executeQuery()){// 解析结果
                 AbstractResultMappingHandler resultMappingHandler = AbstractResultMappingHandler.get(((Class) returnType).getSimpleName());
                 if(null != resultMappingHandler){
                     returnType = resultMappingHandler.parse(set,resultType);

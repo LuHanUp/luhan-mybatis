@@ -19,4 +19,12 @@
     <select id="selectAll" resultType ="top.luhancc.mybatis.example.entity.Users">
         select * from user
     </select>
+
+    <select id="selectMapByName" resultType ="map">
+        select * from user where username = ?
+    </select>
+
+    <select id="selectMapsAll" resultType ="map">
+        select * from user
+    </select>
 </mapper>

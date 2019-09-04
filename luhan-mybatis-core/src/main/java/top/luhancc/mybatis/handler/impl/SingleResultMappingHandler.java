@@ -2,12 +2,9 @@ package top.luhancc.mybatis.handler.impl;
 
 import top.luhancc.mybatis.handler.AbstractResultMappingHandler;
 
-import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 〈单对象的处理器〉<br>

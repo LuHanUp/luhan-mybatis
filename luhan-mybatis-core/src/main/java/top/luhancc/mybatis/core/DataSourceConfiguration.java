@@ -94,6 +94,7 @@ public class DataSourceConfiguration {
         parseMapperClassXmlMap(dataBaseBean.getMapperResource());
         Class.forName("top.luhancc.mybatis.handler.impl.BasicTypesResultMappingHandler");
         Class.forName("top.luhancc.mybatis.handler.impl.CollectionResultMappingHandler");
+        Class.forName("top.luhancc.mybatis.handler.impl.MapResultMappingHandler");
     }
 
     /**

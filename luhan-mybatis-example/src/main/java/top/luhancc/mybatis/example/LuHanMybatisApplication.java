@@ -7,6 +7,7 @@ import top.luhancc.mybatis.example.entity.Users;
 import top.luhancc.mybatis.example.mapper.UserMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 〈测试类〉<br>
@@ -39,10 +40,17 @@ public class LuHanMybatisApplication {
 
         int id = mapper.selectIdByName("luhan");
         System.out.println("id:"+id);
-
         System.out.println();
 
         List<Users> usersList = mapper.selectAll();
         System.out.println("mapper.selectAll():"+usersList);
+
+        Map<String, Object> map = mapper.selectMapByName("luhan");
+        System.out.println("mapper.selectMapByName(\"luhan\"):"+map);
+        System.out.println();
+
+        List<Map<String, Object>> mapList = mapper.selectMapsAll();
+        System.out.println("mapper.selectMapsAll():"+mapList);
+        System.out.println();
     }
 }

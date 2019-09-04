@@ -1,7 +1,5 @@
 package top.luhancc.mybatis.enums;
 
-import com.sun.org.apache.regexp.internal.RE;
-
 /**
  * 〈Mapper.xml中resultType和java类的映射〉<br>
  *
@@ -12,7 +10,8 @@ import com.sun.org.apache.regexp.internal.RE;
 public enum ResultTypeMappingsEnum {
     STRING("string","java.lang.String"),
     INTEGER("Integer","java.lang.Integer"),
-    INT("int","java.lang.Integer")
+    INT("int","java.lang.Integer"),
+    MAP("map","java.util.HashMap")
     ;
     private String keyword;
     private String className;

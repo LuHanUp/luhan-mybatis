@@ -8,6 +8,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 〈集合类型的数据处理器〉<br>
@@ -20,6 +21,9 @@ public class CollectionResultMappingHandler {
     public static AbstractResultMappingHandler<List> LIST = new AbstractResultMappingHandler<List>() {
         @Override
         public List parse(ResultSet resultSet, Object resultType) throws SQLException {
+            if(resultType instanceof Map){
+                return MapResultMappingHandler.LIST_MAP.parse(resultSet,resultType);
+            }
             ResultSetMetaData metaData = resultSet.getMetaData();
             List list = new ArrayList();
             // 遍历结果集

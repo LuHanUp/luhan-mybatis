@@ -5,6 +5,8 @@
 **支持returnType直接填写类的全路径** 
 * 支持将返回结果直接映射到returnType中(需要属性名称和列名一致)  
 * 支持Mapper接口返回List<E>数据格式  
+* 支持Mapper接口返回Map数据格式  
+* 支持Mapper接口返回List<Map>数据格式  
 <!-- * 支持用户自定义数据处理器,如果需要自定义返回数据对象只需要extends AbstractResultMappingHandler对象重写parse(ResultSet resultSet)方法即可 -->
 #### 模块介绍
 luhan-mybatis 父工程  
@@ -54,6 +56,7 @@ luhan-mybatis-example 演示DEMO工程
 │  │  │  │              │  └─impl   存放AbstractResultMappingHandler实现类
 │  │  │  │              │          BasicTypesResultMappingHandler.java  处理返回基本类型的数据处理类
 │  │  │  │              │          CollectionResultMappingHandler.java  处理返回集合类型的数据处理类
+│  │  │  │              │          MapResultMappingHandler.java 处理返回Map类型的数据处理类
 │  │  │  │              │          SingleResultMappingHandler.java  处理返回单对象的数据处理类
 │  │  │  │              │          
 │  │  │  │              └─utils 存放需要用到的相关工具类
