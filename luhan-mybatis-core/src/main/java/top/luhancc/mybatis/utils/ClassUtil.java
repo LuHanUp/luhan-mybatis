@@ -5,7 +5,7 @@ import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 import java.lang.reflect.ParameterizedType;
 
 /**
- * 〈一句话功能简述〉<br>
+ * 〈class工具类〉<br>
  *
  * @author luHan
  * @create 2019-09-02 11:27

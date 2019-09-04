@@ -41,7 +41,7 @@ public abstract class AbstractResultMappingHandler<E>{
                 return abstractResultMappingHandler;
             }
         }
-        return null;
+        throw new RuntimeException(String.format("ConfigurationKeyConstant.CLASS_MAPPING_ENUMS中没有对应[%s]的数据处理类",name));
     }
 
     /**
