@@ -1,4 +1,4 @@
-# 纯手写Mybatis框架的实现(仅供学习使用)
+# 纯手写Mybatis框架的实现(1.0.0正式版)
 ## 目前实现功能:  
 * Mapper.java 接口的定义已经其对应的Mapper.xml的定义
 * Mapper.xml中书写SQL(参数暂不支持#{}和${}模式)  
