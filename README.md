@@ -61,7 +61,7 @@ luhan-mybatis-example 演示DEMO工程
 │  │  │  │              │          
 │  │  │  │              └─utils 存放需要用到的相关工具类
 │  │  │  │                      ClassUtil.java  关于class的相关操作
-│      │                      
+│     │                      
 └─luhan-mybatis-example 测试使用luhan-mybatis-core的模块
     │  pom.xml  luhan-mybatis-example的POM文件
     │  
