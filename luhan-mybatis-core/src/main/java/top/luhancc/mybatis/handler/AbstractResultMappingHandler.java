@@ -19,6 +19,14 @@ import java.sql.SQLException;
  * @since 1.0.0
  */
 public abstract class AbstractResultMappingHandler<E>{
+
+    /**
+     * 转换数据库中的数据为指定的类型E
+     * @param resultSet
+     * @param resultType
+     * @return
+     * @throws SQLException
+     */
     public abstract E parse(ResultSet resultSet,Object resultType) throws SQLException;
 
     protected AbstractResultMappingHandler() {

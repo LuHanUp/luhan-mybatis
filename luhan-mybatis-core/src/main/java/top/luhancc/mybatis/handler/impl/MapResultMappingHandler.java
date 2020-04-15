@@ -5,10 +5,7 @@ import top.luhancc.mybatis.handler.AbstractResultMappingHandler;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 〈返回Map类型的SQL结果数据处理器〉<br>
@@ -27,12 +24,7 @@ public class MapResultMappingHandler {
             ResultSetMetaData metaData = resultSet.getMetaData();
             // 遍历结果集
             while (resultSet.next()) {
-                Map map = new HashMap();
-                for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                    String columnName = metaData.getColumnName(i);
-                    Object value = resultSet.getObject(columnName);
-                    map.put(columnName, value);
-                }
+                Map<String,Object> map = lineToMap(resultSet, metaData);
                 result.add(map);
             }
             return result;
@@ -44,17 +36,30 @@ public class MapResultMappingHandler {
         @SuppressWarnings("unchecked")
         public Map parse(ResultSet resultSet, Object resultType) throws SQLException {
             ResultSetMetaData metaData = resultSet.getMetaData();
-            Map map = new HashMap();
+            Map<String,Object> map = Collections.EMPTY_MAP;
             // 遍历结果集
             while (resultSet.next()) {
-                for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                    String columnName = metaData.getColumnName(i);
-                    Object value = resultSet.getObject(columnName);
-                    map.put(columnName, value);
-                }
+                map = lineToMap(resultSet, metaData);
                 break;
             }
             return map;
         }
     };
+
+    /**
+     * 将数据库中的列名设置为Map的Key，列的数据设置为Map的Value
+     * @param resultSet
+     * @param metaData
+     * @throws SQLException
+     */
+    private static Map<String,Object> lineToMap(ResultSet resultSet, ResultSetMetaData metaData) throws SQLException {
+        int fieldCount = metaData.getColumnCount();
+        Map<String,Object> map = new HashMap<>(fieldCount);
+        for (int i = 1; i <= fieldCount; i++) {
+            String columnName = metaData.getColumnName(i);
+            Object value = resultSet.getObject(columnName);
+            map.put(columnName, value);
+        }
+        return map;
+    }
 }
