@@ -13,6 +13,8 @@ import top.luhancc.mybatis.enums.ResultTypeMappingsEnum;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -27,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.0.0
  */
 public class DataSourceConfiguration {
-    private static ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+    private static ClassLoader classLoader = DataSourceConfiguration.class.getClassLoader();
     /**
      * 存储Mapper.java和Mapper.xml映射数据
      *  key:Mapper.java的全路径
@@ -91,7 +93,10 @@ public class DataSourceConfiguration {
             throw new RuntimeException(String.format("configuration.xml 必须有<%s>属性",ConfigurationKeyConstant.PASSWORD));
         }
 
+        // 解析Mapper.xml内容
         parseMapperClassXmlMap(dataBaseBean.getMapperResource());
+
+        // 添加默认的MappingHandler
         Class.forName("top.luhancc.mybatis.handler.impl.BasicTypesResultMappingHandler");
         Class.forName("top.luhancc.mybatis.handler.impl.CollectionResultMappingHandler");
         Class.forName("top.luhancc.mybatis.handler.impl.MapResultMappingHandler");
@@ -140,8 +145,10 @@ public class DataSourceConfiguration {
      * @param mapperResource
      * @throws DocumentException
      */
-    private void parseMapperClassXmlMap(String mapperResource) throws DocumentException {
-        File file = new File(classLoader.getResource(mapperResource).getFile());
+    private void parseMapperClassXmlMap(String mapperResource) throws DocumentException, UnsupportedEncodingException {
+        String path = classLoader.getResource(mapperResource).getPath();
+        path = URLDecoder.decode(path, "UTF-8");
+        File file = new File(path);
         if (file.isDirectory()){
             File[] files = file.listFiles();
             for (File file1 : files) {
@@ -185,11 +192,11 @@ public class DataSourceConfiguration {
         for (Iterator rootIter = root.elementIterator(); rootIter.hasNext(); ) {//遍历根节点下所有子节点
             FunctionBean fun = new FunctionBean();    //用来存储一条方法的信息
             Element e = (Element) rootIter.next();
-            String sqltype = e.getName().trim();
+            String sqlType = e.getName().trim();
             String funcName = e.attributeValue("id").trim();
             String sql = e.getText().trim();
             String resultType = e.attributeValue("resultType").trim();
-            fun.setSqltype(sqltype);
+            fun.setSqltype(sqlType);
             fun.setFuncName(funcName);
             Object newInstance = null;
             try {
