@@ -52,5 +52,7 @@ public class LuHanMybatisApplication {
         List<Map<String, Object>> mapList = mapper.selectMapsAll();
         System.out.println("mapper.selectMapsAll():"+mapList);
         System.out.println();
+
+        System.out.println("添加的内容");
     }
 }
