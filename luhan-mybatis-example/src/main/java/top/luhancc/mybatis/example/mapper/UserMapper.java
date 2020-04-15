@@ -27,5 +27,7 @@ public interface UserMapper {
     Map<String, Object> selectMapByName(String name);
 
     List<Map<String, Object>> selectMapsAll();
+
+    Object selectByMyHandler();
 }
 

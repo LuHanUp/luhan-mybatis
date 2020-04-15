@@ -27,4 +27,8 @@
     <select id="selectMapsAll" resultType ="map">
         select * from user
     </select>
+
+    <select id="selectByMyHandler" resultType="top.luhancc.mybatis.example.handler.MyMappingHandler" >
+        select 1;
+    </select>
 </mapper>
