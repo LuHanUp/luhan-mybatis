@@ -16,11 +16,14 @@ import java.util.*;
  */
 public class MapResultMappingHandler {
 
-    public static final AbstractResultMappingHandler<List<Map>> LIST_MAP = new AbstractResultMappingHandler<List<Map>>() {
+    /**
+     * List<Map<String,Object>>类型的数据转换器
+     */
+    public static final AbstractResultMappingHandler<List<Map<String,Object>>> LIST_MAP = new AbstractResultMappingHandler<List<Map<String,Object>>>() {
         @Override
         @SuppressWarnings("unchecked")
-        public List<Map> parse(ResultSet resultSet, Object resultType) throws SQLException {
-            List<Map> result = new ArrayList<>();
+        public List<Map<String,Object>> parse(ResultSet resultSet, Object resultType) throws SQLException {
+            List<Map<String,Object>> result = new ArrayList<>();
             ResultSetMetaData metaData = resultSet.getMetaData();
             // 遍历结果集
             while (resultSet.next()) {
@@ -31,10 +34,13 @@ public class MapResultMappingHandler {
         }
     };
 
-    public static final AbstractResultMappingHandler<Map> MAP = new AbstractResultMappingHandler<Map>() {
+    /**
+     * Map<String,Object>类型的数据转换器
+     */
+    public static final AbstractResultMappingHandler<Map<String,Object>> MAP = new AbstractResultMappingHandler<Map<String,Object>>() {
         @Override
         @SuppressWarnings("unchecked")
-        public Map parse(ResultSet resultSet, Object resultType) throws SQLException {
+        public Map<String,Object> parse(ResultSet resultSet, Object resultType) throws SQLException {
             ResultSetMetaData metaData = resultSet.getMetaData();
             Map<String,Object> map = Collections.EMPTY_MAP;
             // 遍历结果集

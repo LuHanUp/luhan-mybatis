@@ -15,6 +15,6 @@ import java.sql.SQLException;
 public class MyMappingHandler extends AbstractResultMappingHandler<Object> {
     @Override
     public Object parse(ResultSet resultSet, Object resultType) throws SQLException {
-        return new Object();
+        return 1;
     }
 }

@@ -1,13 +1,10 @@
 package top.luhancc.mybatis.handler.impl;
 
-import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import top.luhancc.mybatis.handler.AbstractResultMappingHandler;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +17,9 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class CollectionResultMappingHandler {
-    public static AbstractResultMappingHandler<List> LIST = new AbstractResultMappingHandler<List>() {
+    public static AbstractResultMappingHandler<List<?>> LIST = new AbstractResultMappingHandler<List<?>>() {
         @Override
-        public List parse(ResultSet resultSet, Object resultType) throws SQLException{
+        public List<?> parse(ResultSet resultSet, Object resultType) throws SQLException{
             if(resultType instanceof Map){
                 return MapResultMappingHandler.LIST_MAP.parse(resultSet,resultType);
             }
