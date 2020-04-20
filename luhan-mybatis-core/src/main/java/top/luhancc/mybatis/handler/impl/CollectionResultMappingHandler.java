@@ -19,7 +19,7 @@ import java.util.Map;
 public class CollectionResultMappingHandler {
     public static AbstractResultMappingHandler<List<?>> LIST = new AbstractResultMappingHandler<List<?>>() {
         @Override
-        public List<?> parse(ResultSet resultSet, Object resultType) throws SQLException{
+        public List<?> parse(ResultSet resultSet, Object resultType) throws Exception{
             if(resultType instanceof Map){
                 return MapResultMappingHandler.LIST_MAP.parse(resultSet,resultType);
             }
